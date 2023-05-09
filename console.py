@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-The console v: 0.0.1
+The console v: 0.0.1 
 Contains the entry point of the command interpreter
 """
 
