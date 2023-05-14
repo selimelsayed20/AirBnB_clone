@@ -1,53 +1,93 @@
 #!/usr/bin/python3
-"""Unittest module for the City Class."""
-
+""" Defines a class TestCity for City module. """
 import unittest
-from datetime import datetime
-import time
 from models.city import City
-import re
-import json
-from models.engine.file_storage import FileStorage
-import os
-from models import storage
 from models.base_model import BaseModel
+import datetime
 
 
 class TestCity(unittest.TestCase):
+    """Defines tests for City Class"""
 
-    """Test Cases for the City class."""
+    @classmethod
+    def setUp(cls):
+        """Runs for each test case.
+        """
+        cls.city1 = City()
+        cls.city1.name = "Nairobi"
 
-    def setUp(self):
-        """Sets up test methods."""
-        pass
+    @classmethod
+    def tearDown(cls):
+        """Cleans up after each test.
+        """
+        del cls.city1
 
-    def tearDown(self):
-        """Tears down test methods."""
-        self.resetStorage()
-        pass
+    def test_class_exists(self):
+        """Tests if class exists.
+        """
+        result = "<class 'models.city.City'>"
+        self.assertEqual(str(type(self.city1)), result)
 
-    def resetStorage(self):
-        """Resets FileStorage data."""
-        FileStorage._FileStorage__objects = {}
-        if os.path.isfile(FileStorage._FileStorage__file_path):
-            os.remove(FileStorage._FileStorage__file_path)
+    def test_inheritance(self):
+        """Test if Amenity is a subclass and instace of BaseModel.
+        """
+        self.assertIsInstance(self.city1, City)
+        self.assertEqual(type(self.city1), City)
+        self.assertEqual(issubclass(self.city1.__class__, BaseModel), True)
 
-    def test_8_instantiation(self):
-        """Tests instantiation of City class."""
+    def test_types(self):
+        """Test if attributes type is correct.
+        """
+        self.assertIsInstance(self.city1.name, str)
+        self.assertEqual(type(self.city1.name), str)
+        self.assertIsInstance(self.city1.id, str)
+        self.assertEqual(type(self.city1.id), str)
+        self.assertIsInstance(self.city1.created_at, datetime.datetime)
+        self.assertIsInstance(self.city1.updated_at, datetime.datetime)
+        self.assertIsInstance(self.city1.state_id, str)
 
-        b = City()
-        self.assertEqual(str(type(b)), "<class 'models.city.City'>")
-        self.assertIsInstance(b, City)
-        self.assertTrue(issubclass(type(b), BaseModel))
+    def test_save(self):
+        """Test if save method is working correctly after update.
+        """
+        self.city1.save()
+        self.assertNotEqual(self.city1.created_at, self.city1.updated_at)
 
-    def test_8_attributes(self):
-        """Tests the attributes of City class."""
-        attributes = storage.attributes()["City"]
-        o = City()
-        for k, v in attributes.items():
-            self.assertTrue(hasattr(o, k))
-            self.assertEqual(type(getattr(o, k, None)), v)
+    def test_functions(self):
+        """Test if City moudule is documented.
+        """
+        self.assertIsNotNone(City.__doc__)
+
+    def test_has_attributes(self):
+        """Test if expected attributes exist.
+        """
+        self.assertTrue(hasattr(self.city1, 'name'))
+        self.assertTrue(hasattr(self.city1, 'id'))
+        self.assertTrue(hasattr(self.city1, 'created_at'))
+        self.assertTrue(hasattr(self.city1, 'updated_at'))
+        self.assertTrue(hasattr(self.city1, 'state_id'))
+
+    def test_to_dict(self):
+        """Test if to_dict method is working correctly.
+        """
+        my_model_json = self.city1.to_dict()
+        self.assertEqual(str, type(my_model_json['created_at']))
+        self.assertEqual(my_model_json['created_at'],
+                         self.city1.created_at.isoformat())
+        self.assertEqual(datetime.datetime, type(self.city1.created_at))
+        self.assertEqual(my_model_json['__class__'],
+                         self.city1.__class__.__name__)
+        self.assertEqual(my_model_json['id'], self.city1.id)
+
+    def test_unique_id(self):
+        """Test if each instance is created with a unique ID.
+        """
+        city2 = self.city1.__class__()
+        city3 = self.city1.__class__()
+        city4 = self.city1.__class__()
+        self.assertNotEqual(self.city1.id, city2.id)
+        self.assertNotEqual(self.city1.id, city3.id)
+        self.assertNotEqual(self.city1.id, city4.id)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
