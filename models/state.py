@@ -1,17 +1,12 @@
-#!/usr/bin/python3
-"""Defines a class State that inherits from BaseModel"""
+#!/usr/bin/python
+""" holds class State"""
 from models.base_model import BaseModel
 
 
 class State(BaseModel):
-    """Class that defines properties of State.
-
-    Attributes:
-        name (string): name of state.
-    """
+    """Representation of state """
     name = ""
 
     def __init__(self, *args, **kwargs):
-        """Creates new instances of State.
-        """
+        """initializes state"""
         super().__init__(*args, **kwargs)

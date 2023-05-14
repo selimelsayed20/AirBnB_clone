@@ -1,19 +1,13 @@
-#!/usr/bin/python3
-"""Defines a class City that inherits from BaseModel"""
+#!/usr/bin/python
+""" holds class City"""
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """Class that defines properties of City.
-
-    Attributes:
-        name (string): name of city.
-        state_id (string): id of state.
-    """
+    """Representation of city """
     state_id = ""
     name = ""
 
     def __init__(self, *args, **kwargs):
-        """Creates new instances of City.
-        """
+        """initializes city"""
         super().__init__(*args, **kwargs)
