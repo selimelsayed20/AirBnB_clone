@@ -1,4 +1,6 @@
-body{
-    padding: unset;
-    margin: unset;
+/* common CSS */
+
+body {
+	margin: 0;
+	padding: 0;
 }
